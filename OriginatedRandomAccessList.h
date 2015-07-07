@@ -54,8 +54,9 @@ OriginatedRandomAccessList<T>::OriginatedRandomAccessList(std::initializer_list<
         leftHand=rightHand;
     }
 
-    back = leftHand;
+    back = leftHand->previous;
     back->next=nullptr;
+    delete leftHand;
     leftHand=rightHand=nullptr;
 }
 
@@ -198,4 +199,6 @@ T OriginatedRandomAccessList<T>::operator [](int num){
     }
     return temp_ptr->data;
 }
+
 #endif // ORIGINATEDRANDOMACCESSLIST
+
