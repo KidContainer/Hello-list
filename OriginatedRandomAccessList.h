@@ -126,6 +126,7 @@ T OriginatedRandomAccessList<T>::remove(T elem){
 
         for(auto finder=head;finder!=nullptr;finder=finder->next)
         {
+            //if the list is empty
             if(finder==nullptr){
                 throw("There is no such element");
             }
@@ -138,14 +139,18 @@ T OriginatedRandomAccessList<T>::remove(T elem){
                         finder=nullptr;
                         break;
                     }
+                    //if the elem is the first element
                     if(finder->previous==nullptr&&finder->next!=nullptr){
                         head=finder->next;
+                        head->previous=nullptr;
                         delete finder;
                         finder=nullptr;
                         break;
                     }
+                    //if the elem is the last element
                     if(finder->next==nullptr&&finder->previous!=nullptr){
                         back=finder->previous;
+                        back->next=nullptr;
                         delete finder;
                         finder=nullptr;
                         break;
@@ -193,6 +198,4 @@ T OriginatedRandomAccessList<T>::operator [](int num){
     }
     return temp_ptr->data;
 }
-
 #endif // ORIGINATEDRANDOMACCESSLIST
-
