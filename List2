@@ -1,0 +1,83 @@
+#pragma once
+#include<iostream>
+#include<exception>
+using namespace std;
+/*
+与List不同，List是将迭代器融入到了链表里面，使链表充当迭代器的功能，而内容链表则独立与链表外存在，仅提供指针共指向
+而List2则是将内容链表和迭代器共同存放在链表中，链表包含可供使用的迭代器以及一个数据链表
+*/
+
+/*
+最先理解的是Python中让自定义类适用于for...in...语句；
+其实Python中的迭代器类似于Java，拥有next方法以及__iter__方法；
+其中的__iter__方法类似于C++中的begin()和end()，而next方法则类似C++中的!=、*和前置++运算符的重载。
+总结一下，begin()和end()方法重载了range for里的begin()和end()，返回一个可迭代的对象，这个对象一般指向数据链表
+而三个重载运算符主要是用于判断是否遍历结束（!=）、进行后移一位（前置++）和解引用以取得迭代指针里的数据（*）
+*/
+
+/*
+此列表改变了List的结构，分成三部分，分别是节点、迭代器和链表。虽然分散但是更加清楚。取消了current迭代器。同时每次递增都只是操作迭代器，并未改变head迭代器的位置
+每当调用begin()时，依然会返回最初始的指向头部的迭代器。
+*/
+template <typename T>
+struct Node {
+	T data;
+	Node* next;
+};
+
+
+template<typename T>
+class iter {
+
+public:
+	Node<T>* node;
+
+	Node<T>& operator *() {
+		return *node;
+	}
+
+	iter& operator ++() {
+		node = node->next;
+		return *this;
+
+	}
+
+	bool operator !=(iter& other) {
+		return node != other.node->next;
+	}
+
+};
+
+template<typename T>
+class List2 {
+private:
+	iter<T> *head;
+	iter<T> *last;
+
+public:
+	List2(T data) {
+		head = new iter<T>;
+		last = new iter<T>;
+		auto temp = new Node<T>;
+		temp->data = data;
+		head->node = last->node = temp;
+		last->node->next = nullptr;
+	}
+
+	void append(T data) {
+		auto temp = new Node<T>;
+		temp->data = data;
+		last->node->next = temp;
+		last->node = temp;
+		temp->next = nullptr;
+	}
+
+	iter<T> begin() {
+		return *head;
+	}
+
+	iter<T> end() {
+		return *last;
+	}
+
+};
