@@ -41,6 +41,7 @@ public:
 		last = temp;
 	}
 	List<T> begin() {
+		current = head;
 		return *this;
 	}
 
@@ -61,9 +62,6 @@ public:
 		return *current;
 	}
 
-	void Reset() {
-		current = head;
-	}
 
 	~List() {}
 };
