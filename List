@@ -1,0 +1,70 @@
+#pragma once
+#include<iostream>
+using namespace std;
+/*
+实现了一个链表
+链表本身具有迭代器的特征
+该链表由三个属性组成：
+	头迭代器、尾迭代器和当前遍历到的迭代器（为了记录链表遍历到了哪里同时记录供解引用运算符使用）
+
+这样虽然可以使结构更加紧凑，但是有个缺点，在遍历之前如果进行自增运算的话，会改变current的位置，从而解引用的时候无法从头部开始
+因为解引用函数中使用了current来进行。为了解决这个问题，提供了Reset方法来重置current指针。
+*/
+template<typename T>
+struct Node
+{
+	T data;
+	Node* next;
+};
+
+template <typename T>
+class List
+{
+private:
+	Node<T>* current;
+	Node<T>* head;
+	Node<T>* last;
+
+public:
+	List() {}
+
+	List(T data) {
+		auto temp = new Node<T>;
+		head = last= current = temp;
+		current->data = data;
+		last->next = nullptr;
+	}
+	void append(T data) {
+		auto temp = new Node<T>;
+		temp->data = data;
+		last->next = temp;
+		last = temp;
+	}
+	List<T> begin() {
+		return *this;
+	}
+
+	List<T> end() {
+		return *this;
+	}
+
+	bool operator !=(List<T>& other) {
+		return current != last->next;
+	}
+
+	List<T> operator ++() {
+		current = current->next;
+		return *this;
+	}
+
+	Node<T> operator *() {
+		return *current;
+	}
+
+	void Reset() {
+		current = head;
+	}
+
+	~List() {}
+};
+
