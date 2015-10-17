@@ -71,8 +71,8 @@ public:
 		last->node = temp;
 		temp->next = nullptr;
 	}
-
-	iter<T> begin() {
+	//返回引用类型，可以让使用者自主确定是否改变head所指的位置。通过定义一个引用迭代器，然后自己递增，就可以避免拷贝到一个新的容器中来实现这个功能
+	iter<T>& begin() {    
 		return *head;
 	}
 
